@@ -32,7 +32,7 @@ export default function Navbar() {
 
         <div className="nav-cta">
           <Link href="/login" className="btn btn-outline">Sign In</Link>
-          <Link href="/login" className="btn btn-primary">Start
+          <Link href="/login" className="btn btn-primary">Start Building</Link>
         </div>
       </div>
     </nav>
