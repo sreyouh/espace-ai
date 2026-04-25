@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+    import { NextRequest, NextResponse } from "next/server";
 
 const HOSTINGER_TOKEN = process.env.HOSTINGER_API_TOKEN;
 const BUILDING_CHARGE = 299;
@@ -33,36 +33,13 @@ export async function POST(req: NextRequest) {
 
     const text = await response.text();
 
-    let data;
-    try {
-      data = JSON.parse(text);
-    } catch {
-      return NextResponse.json(
-        { error: "Invalid response from Hostinger" },
-        { status: 500 }
-      );
-    }
+    // Return raw response so we can see what Hostinger sends
+    return NextResponse.json({
+      status: response.status,
+      raw: text,
+    });
 
-    if (!response.ok) {
-      return NextResponse.json(
-        { error: data?.message || "Hostinger API error" },
-        { status: 500 }
-      );
-    }
-
-    const results = (Array.isArray(data) ? data : data?.data ?? []).map(
-      (item: any) => ({
-        domain: item.domain,
-        available: item.available,
-        price: item.price ?? null,
-        total: item.available && item.price
-          ? Math.round(item.price) + BUILDING_CHARGE
-          : 0,
-      })
-    );
-
-    return NextResponse.json({ results });
-  } catch (err) {
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
