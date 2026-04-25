@@ -3,28 +3,21 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-const BUILDING_CHARGE = 299;
-const TLDS = [".com", ".in", ".online"];
-
-const mockPrices: Record<string, number> = {
-  ".com": 899,
-  ".in": 599,
-  ".online": 349,
-};
-
 interface DomainResult {
-  tld: string;
   domain: string;
   available: boolean;
-  price: number;
+  price: number | null;
   total: number;
 }
+
+const TLDS = [".com", ".in", ".online", ".site", ".space", ".live", ".net"];
 
 export default function DomainsPage() {
   const [query, setQuery] = useState("");
   const [searching, setSearching] = useState(false);
   const [results, setResults] = useState<DomainResult[]>([]);
   const [searched, setSearched] = useState(false);
+  const [error, setError] = useState("");
   const [selectedDomain, setSelectedDomain] = useState<DomainResult | null>(null);
   const [particles, setParticles] = useState<{ x: number; y: number; size: number; speed: number; opacity: number }[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -46,23 +39,26 @@ export default function DomainsPage() {
     setSearched(false);
     setResults([]);
     setSelectedDomain(null);
+    setError("");
 
-    await new Promise((r) => setTimeout(r, 1400));
+    try {
+      const response = await fetch("/api/check-domain", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query }),
+      });
 
-    const clean = query.toLowerCase().replace(/[^a-z0-9-]/g, "").replace(/\s+/g, "-");
-    const res: DomainResult[] = TLDS.map((tld) => {
-      const available = Math.random() > 0.3;
-      const price = mockPrices[tld];
-      return {
-        tld,
-        domain: clean + tld,
-        available,
-        price,
-        total: available ? price + BUILDING_CHARGE : 0,
-      };
-    });
+      const data = await response.json();
 
-    setResults(res);
+      if (data.error) {
+        setError(data.error);
+      } else {
+        setResults(data.results);
+      }
+    } catch (err) {
+      setError("Something went wrong. Please try again.");
+    }
+
     setSearching(false);
     setSearched(true);
   };
@@ -141,7 +137,7 @@ export default function DomainsPage() {
                 disabled={searching}
               />
               <div className="domain-tld-pills">
-                {TLDS.map((tld) => (
+                {[".com", ".in", ".online"].map((tld) => (
                   <span key={tld} className="domain-tld-pill">{tld}</span>
                 ))}
               </div>
@@ -161,10 +157,10 @@ export default function DomainsPage() {
 
           <div className="domain-stats">
             {[
-              { num: "₹349", label: "Starting from" },
-              { num: "3", label: "TLDs available" },
+              { num: "7+", label: "TLDs available" },
               { num: "24h", label: "Setup time" },
               { num: "100%", label: "Google indexed" },
+              { num: "Live", label: "Availability check" },
             ].map((s, i) => (
               <div key={i} className="domain-stat">
                 <span className="domain-stat-num">{s.num}</span>
@@ -181,10 +177,12 @@ export default function DomainsPage() {
             {searching ? (
               <div className="domain-searching-state">
                 <div className="domain-searching-ring" />
-                <p>Checking availability across registrars...</p>
+                <p>Checking real-time availability via Hostinger...</p>
               </div>
             ) : (
               <>
+                {error && <div className="auth-error" style={{ marginBottom: 20 }}>{error}</div>}
+
                 <h2 className="domain-results-title">
                   Results for <span>"{query}"</span>
                 </h2>
@@ -194,7 +192,7 @@ export default function DomainsPage() {
                     <div
                       key={i}
                       className={`domain-result-card ${r.available ? "available" : "taken"} ${selectedDomain?.domain === r.domain ? "selected" : ""}`}
-                      style={{ animationDelay: `${i * 0.1}s` }}
+                      style={{ animationDelay: `${i * 0.08}s` }}
                     >
                       <div className="domain-result-left">
                         <div className={`domain-result-status ${r.available ? "status-available" : "status-taken"}`}>
@@ -219,15 +217,21 @@ export default function DomainsPage() {
                       {r.available && (
                         <div className="domain-result-right">
                           <div className="domain-result-price">
-                            <span className="domain-result-amount">₹{r.total}</span>
-                            <span className="domain-result-period">one time</span>
+                            <span className="domain-result-amount">
+                              {r.price ? `₹${r.total}` : "Contact us"}
+                            </span>
+                            <span className="domain-result-period">
+                              {r.price ? "one time" : "for pricing"}
+                            </span>
                           </div>
-                          <button
-                            className={`domain-result-btn ${selectedDomain?.domain === r.domain ? "selected-btn" : ""}`}
-                            onClick={() => setSelectedDomain(selectedDomain?.domain === r.domain ? null : r)}
-                          >
-                            {selectedDomain?.domain === r.domain ? "Selected" : "Select"}
-                          </button>
+                          {r.price && (
+                            <button
+                              className={`domain-result-btn ${selectedDomain?.domain === r.domain ? "selected-btn" : ""}`}
+                              onClick={() => setSelectedDomain(selectedDomain?.domain === r.domain ? null : r)}
+                            >
+                              {selectedDomain?.domain === r.domain ? "Selected" : "Select"}
+                            </button>
+                          )}
                         </div>
                       )}
                     </div>
