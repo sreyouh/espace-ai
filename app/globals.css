@@ -1916,3 +1916,70 @@ img {
     grid-template-columns: 1fr;
   }
 }
+/* ========= PORTFOLIO CARD DASHBOARD ========= */
+.portfolio-card-dashboard {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  max-width: 700px;
+}
+
+.pcd-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.pcd-info {
+  flex: 1;
+}
+
+.pcd-name {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.pcd-title {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.pcd-url {
+  font-size: 0.78rem;
+  color: var(--accent);
+  font-family: monospace;
+}
+
+.pcd-actions {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 600px) {
+  .portfolio-card-dashboard {
+    flex-direction: column;
+    text-align: center;
+  }
+  .pcd-actions {
+    width: 100%;
+    justify-content: center;
+  }
+}
