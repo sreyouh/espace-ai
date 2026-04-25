@@ -16,8 +16,7 @@ export async function POST(req: NextRequest) {
       .replace(/[^a-z0-9-]/g, "")
       .replace(/\s+/g, "-");
 
-    const tlds = [".com", ".in", ".online", ".site", ".space", ".live", ".net"];
-    const domains = tlds.map((tld) => clean + tld);
+    const tlds = ["com", "in", "online", "site", "space", "live", "net"];
 
     const response = await fetch(
       "https://developers.hostinger.com/api/domains/v1/availability",
@@ -27,7 +26,10 @@ export async function POST(req: NextRequest) {
           "Content-Type": "application/json",
           Authorization: `Bearer ${HOSTINGER_TOKEN}`,
         },
-        body: JSON.stringify({ domains }),
+        body: JSON.stringify({
+          domain: clean,
+          tlds: tlds,
+        }),
       }
     );
 
@@ -35,7 +37,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       status: response.status,
-      raw: text.substring(0, 500),
+      raw: text.substring(0, 1000),
     });
 
   } catch (err: any) {
