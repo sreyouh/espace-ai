@@ -38,7 +38,7 @@ export default function EditPortfolio() {
         return;
       }
 
-      setPortfolioId(data.id);
+      setPortfolioId(data.user_id);
       setUsername(data.username);
       setForm({
         full_name: data.full_name || "",
@@ -74,7 +74,7 @@ export default function EditPortfolio() {
         experience: form.experience,
         projects: form.projects,
       })
-      .eq("id", portfolioId);
+      .eq("user_id", portfolioId);
 
     if (error) {
       setError(error.message);
