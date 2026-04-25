@@ -50,8 +50,8 @@ export default function HeroSection() {
               <div className="hero-card-header">
                 <div className="hero-avatar">A</div>
                 <div>
-                  <div className="hero-card-name">Alex Johnson</div>
-                  <div className="hero-card-role">Full Stack Developer</div>
+                  <div className="hero-card-name">Name</div>
+                  <div className="hero-card-role">what you do </div>
                 </div>
               </div>
               <div className="hero-card-tags">
