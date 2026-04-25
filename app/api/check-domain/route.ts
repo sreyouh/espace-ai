@@ -3,6 +3,16 @@ import { NextRequest, NextResponse } from "next/server";
 const HOSTINGER_TOKEN = process.env.HOSTINGER_API_TOKEN;
 const BUILDING_CHARGE = 299;
 
+const TLD_PRICES: Record<string, number> = {
+  com: 899,
+  in: 599,
+  online: 349,
+  site: 349,
+  space: 299,
+  live: 449,
+  net: 799,
+};
+
 export async function POST(req: NextRequest) {
   try {
     const { query } = await req.json();
@@ -33,12 +43,28 @@ export async function POST(req: NextRequest) {
       }
     );
 
-    const text = await response.text();
+    const data = await response.json();
 
-    return NextResponse.json({
-      status: response.status,
-      raw: text.substring(0, 1000),
+    if (!response.ok) {
+      return NextResponse.json(
+        { error: data?.message || "Hostinger API error" },
+        { status: 500 }
+      );
+    }
+
+    const results = data.map((item: any) => {
+      const tld = item.domain.split(".").pop();
+      const price = TLD_PRICES[tld] ?? 499;
+      return {
+        domain: item.domain,
+        available: item.is_available,
+        restriction: item.restriction,
+        price: price,
+        total: item.is_available ? price + BUILDING_CHARGE : 0,
+      };
     });
+
+    return NextResponse.json({ results });
 
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });
