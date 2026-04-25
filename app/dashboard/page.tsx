@@ -117,13 +117,16 @@ export default function Dashboard() {
               </p>
             </div>
             <div className="pcd-actions">
-              <a href={`/portfolio/${portfolio.username}`} target="_blank" className="btn btn-outline">
-                View Live
-              </a>
-              <a href="/edit" className="btn btn-primary">
-                Edit
-              </a>
-            </div>
+  <a href={`/portfolio/${portfolio.username}`} target="_blank" className="btn btn-outline">
+    View Live
+  </a>
+  <a href="/edit" className="btn btn-primary">
+    Edit
+  </a>
+  <a href="/domains" className="btn btn-gold">
+    Upgrade Domain
+  </a>
+</div>
           </div>
         ) : (
           <div className="dashboard-empty">
