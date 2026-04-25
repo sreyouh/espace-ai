@@ -26,7 +26,7 @@ const freePlan = {
   subdomain: "yourname.espacesystems.online",
   cta: "Start Building Free",
   ctaClass: "btn-primary",
-  href: "/create",
+  href: "/login",
   featured: true,
 };
 
@@ -49,26 +49,22 @@ const customPlan = {
   subdomain: "yourname.com",
   cta: "Get Custom Domain",
   ctaClass: "btn-gold",
-  href: "/upgrade",
+  href: "/login",
   featured: false,
 };
 
-function PricingCard({ plan }) {
+function PricingCard({ plan }: { plan: typeof freePlan }) {
   return (
     <div className={`pricing-card ${plan.featured ? "featured" : ""}`}>
       <span className={`pricing-tag ${plan.tagClass}`}>{plan.tag}</span>
-
       <h3 className="pricing-name">{plan.name}</h3>
-
       <div className="pricing-price">
         <span className="pricing-amount">
           {plan.amount === "0" ? "Free" : `₹${plan.amount}`}
         </span>
         <span className="pricing-period">{plan.period}</span>
       </div>
-
       <p className="pricing-desc">{plan.desc}</p>
-
       <ul className="pricing-features">
         {plan.features.map((f, i) => (
           <li key={i} className="pricing-feature">
@@ -77,11 +73,9 @@ function PricingCard({ plan }) {
           </li>
         ))}
       </ul>
-
       <div style={{ marginBottom: 16 }}>
         <span className="pricing-subdomain">{plan.subdomain}</span>
       </div>
-
       <Link href={plan.href} className={`btn ${plan.ctaClass} btn-lg`} style={{ width: "100%", justifyContent: "center" }}>
         {plan.cta}
       </Link>
@@ -101,12 +95,10 @@ export default function PricingSection() {
             start at just ₹350 — a one-time investment in your professional identity.
           </p>
         </div>
-
         <div className="pricing-grid">
           <PricingCard plan={freePlan} />
           <PricingCard plan={customPlan} />
         </div>
-
         <p style={{ textAlign: "center", marginTop: 32, fontSize: "0.85rem", color: "var(--text-muted)" }}>
           Custom domain pricing varies based on domain name and plan. Starting from ₹350.
           Contact us for enterprise or bulk requirements.
@@ -114,4 +106,4 @@ export default function PricingSection() {
       </div>
     </section>
   );
-}
+    }
