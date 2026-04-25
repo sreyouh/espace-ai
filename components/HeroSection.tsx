@@ -31,9 +31,9 @@ export default function HeroSection() {
             </p>
 
             <div className="hero-actions">
-              <Link href="/create" className="btn btn-primary btn-lg">
-                Start Building Free
-              </Link>
+              <Link href="/login" className="btn btn-primary btn-lg">
+  Start Building Free
+</Link>
               <Link href="#pricing" className="btn btn-outline btn-lg">
                 See Pricing
               </Link>
