@@ -82,9 +82,9 @@ export default function WhyPortfolioSection() {
             </ul>
 
             <div style={{ marginTop: 36 }}>
-              <Link href="/create" className="btn btn-primary btn-lg">
-                Start Building Free
-              </Link>
+              <Link href="/login" className="btn btn-primary btn-lg">
+  Start Building Free
+</Link>
             </div>
           </div>
         </div>
