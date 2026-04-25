@@ -6,10 +6,12 @@ import Link from "next/link";
 export default function EditPortfolio() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [portfolioId, setPortfolioId] = useState("");
+  const [portfolioUserId, setPortfolioUserId] = useState("");
   const [username, setUsername] = useState("");
+  const [photoUrl, setPhotoUrl] = useState("");
   const [form, setForm] = useState({
     full_name: "",
     title: "",
@@ -38,8 +40,9 @@ export default function EditPortfolio() {
         return;
       }
 
-      setPortfolioId(data.user_id);
+      setPortfolioUserId(data.user_id);
       setUsername(data.username);
+      setPhotoUrl(data.photo_url || "");
       setForm({
         full_name: data.full_name || "",
         title: data.title || "",
@@ -58,6 +61,42 @@ export default function EditPortfolio() {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    setError("");
+
+    const fileExt = file.name.split(".").pop();
+    const fileName = `${portfolioUserId}.${fileExt}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from("avatars")
+      .upload(fileName, file, { upsert: true });
+
+    if (uploadError) {
+      setError("Photo upload failed. Try again.");
+      setUploading(false);
+      return;
+    }
+
+    const { data: urlData } = supabase.storage
+      .from("avatars")
+      .getPublicUrl(fileName);
+
+    const publicUrl = urlData.publicUrl;
+
+    await supabase
+      .from("portfolios")
+      .update({ photo_url: publicUrl })
+      .eq("user_id", portfolioUserId);
+
+    setPhotoUrl(publicUrl);
+    setUploading(false);
+    setSuccess("Photo uploaded successfully!");
+  };
+
   const handleSave = async () => {
     setSaving(true);
     setError("");
@@ -74,7 +113,7 @@ export default function EditPortfolio() {
         experience: form.experience,
         projects: form.projects,
       })
-      .eq("user_id", portfolioId);
+      .eq("user_id", portfolioUserId);
 
     if (error) {
       setError(error.message);
@@ -96,8 +135,8 @@ export default function EditPortfolio() {
   return (
     <div className="dashboard-page">
       <aside className="dashboard-sidebar">
-        <div className="sidebar-logo" style={{ color: "white", fontFamily: "var(--font-display)", fontSize: "1.2rem", fontWeight: 700 }}>
-          Espace AI
+        <div className="sidebar-logo">
+          <span style={{ color: "white", fontFamily: "var(--font-display)", fontSize: "1.1rem", fontWeight: 700 }}>Espace AI</span>
         </div>
         <nav className="sidebar-nav">
           <Link href="/dashboard" className="sidebar-link">
@@ -148,6 +187,31 @@ export default function EditPortfolio() {
           {error && <div className="auth-error">{error}</div>}
           {success && <div className="auth-success">{success}</div>}
 
+          {/* Photo upload */}
+          <div className="photo-upload-section">
+            <div className="photo-preview">
+              {photoUrl ? (
+                <img src={photoUrl} alt="Profile" />
+              ) : (
+                <span>{form.full_name?.charAt(0)}</span>
+              )}
+            </div>
+            <div className="photo-upload-info">
+              <p className="photo-upload-title">Profile Photo</p>
+              <p className="photo-upload-hint">JPEG or PNG, max 5MB. Shows on your portfolio and Google.</p>
+              <label className="photo-upload-btn">
+                {uploading ? "Uploading..." : "Upload Photo"}
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png"
+                  onChange={handlePhotoUpload}
+                  style={{ display: "none" }}
+                  disabled={uploading}
+                />
+              </label>
+            </div>
+          </div>
+
           <div className="edit-grid">
             <div className="create-field">
               <label>Full Name</label>
@@ -195,4 +259,4 @@ export default function EditPortfolio() {
       </main>
     </div>
   );
-      }
+                                   }
