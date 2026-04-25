@@ -16,7 +16,6 @@ async function purchaseDomain(domain: string) {
     const domainName = parts[0];
     const tld = parts.slice(1).join(".");
 
-    // Step 1 — Check availability one more time
     const availRes = await fetch(
       "https://developers.hostinger.com/api/domains/v1/availability",
       {
@@ -39,7 +38,6 @@ async function purchaseDomain(domain: string) {
       return { success: false, error: "Domain no longer available" };
     }
 
-    // Step 2 — Purchase domain
     const purchaseRes = await fetch(
       "https://developers.hostinger.com/api/domains/v1/portfolio",
       {
@@ -74,7 +72,6 @@ async function purchaseDomain(domain: string) {
 
 async function setDnsRecords(domain: string) {
   try {
-    // Point domain to Vercel
     const records = [
       {
         type: "A",
@@ -111,6 +108,30 @@ async function setDnsRecords(domain: string) {
   }
 }
 
+async function addDomainToVercel(domain: string) {
+  try {
+    const projectId = process.env.VERCEL_PROJECT_ID;
+    const token = process.env.VERCEL_TOKEN;
+
+    const res = await fetch(
+      `https://api.vercel.com/v10/projects/${projectId}/domains`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ name: domain }),
+      }
+    );
+
+    const data = await res.json();
+    return { success: res.ok, data };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
 export async function POST(req: NextRequest) {
   try {
     const {
@@ -136,7 +157,7 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // Step 2 — Save order to Supabase as pending
+    // Step 2 — Save order to Supabase
     await supabase.from("orders").insert({
       user_id,
       domain,
@@ -150,21 +171,21 @@ export async function POST(req: NextRequest) {
     const purchase = await purchaseDomain(domain);
 
     if (!purchase.success) {
-      // Payment succeeded but domain purchase failed
-      // Save as needs_manual_review
       await supabase
         .from("orders")
         .update({ status: "needs_review", notes: purchase.error })
         .eq("razorpay_payment_id", razorpay_payment_id);
 
-      // Still return success to user — we will handle manually
       return NextResponse.json({ success: true, domain_status: "pending" });
     }
 
     // Step 4 — Set DNS records to point to Vercel
     await setDnsRecords(domain);
 
-    // Step 5 — Update order status
+    // Step 5 — Add domain to Vercel project
+    await addDomainToVercel(domain);
+
+    // Step 6 — Update order status
     await supabase
       .from("orders")
       .update({ status: "domain_active" })
