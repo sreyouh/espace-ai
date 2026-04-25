@@ -20,6 +20,7 @@ export default function EditPortfolio() {
     education: "",
     experience: "",
     projects: "",
+    template: "classic",
   });
 
   useEffect(() => {
@@ -51,6 +52,7 @@ export default function EditPortfolio() {
         education: data.education || "",
         experience: data.experience || "",
         projects: data.projects || "",
+        template: data.template || "classic",
       });
       setLoading(false);
     };
@@ -112,6 +114,7 @@ export default function EditPortfolio() {
         education: form.education,
         experience: form.experience,
         projects: form.projects,
+        template: form.template,
       })
       .eq("user_id", portfolioUserId);
 
@@ -212,6 +215,63 @@ export default function EditPortfolio() {
             </div>
           </div>
 
+          {/* Template Selection */}
+          <div className="create-field" style={{ marginBottom: 28 }}>
+            <label>Portfolio Template</label>
+            <div className="template-grid">
+              <div
+                className={`template-card ${form.template === "classic" || !form.template ? "template-selected" : ""}`}
+                onClick={() => update("template", "classic")}
+              >
+                <div className="template-preview classic-preview">
+                  <div className="tp-header" />
+                  <div className="tp-body">
+                    <div className="tp-line" />
+                    <div className="tp-line short" />
+                  </div>
+                </div>
+                <div className="template-info">
+                  <span className="template-name">Classic</span>
+                  <span className="template-tag free-template">Free</span>
+                </div>
+              </div>
+
+              <div
+                className={`template-card ${form.template === "horizon" ? "template-selected" : ""}`}
+                onClick={() => update("template", "horizon")}
+              >
+                <div className="template-preview horizon-preview">
+                  <div className="tp-header dark" />
+                  <div className="tp-body dark">
+                    <div className="tp-line light" />
+                    <div className="tp-line short light" />
+                  </div>
+                </div>
+                <div className="template-info">
+                  <span className="template-name">Horizon</span>
+                  <span className="template-tag premium-template">Premium</span>
+                </div>
+              </div>
+
+              <div
+                className={`template-card ${form.template === "aurora" ? "template-selected" : ""}`}
+                onClick={() => update("template", "aurora")}
+              >
+                <div className="template-preview aurora-preview">
+                  <div className="tp-header gradient" />
+                  <div className="tp-body">
+                    <div className="tp-line" />
+                    <div className="tp-line short" />
+                  </div>
+                </div>
+                <div className="template-info">
+                  <span className="template-name">Aurora</span>
+                  <span className="template-tag premium-template">Premium</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className="edit-grid">
             <div className="create-field">
               <label>Full Name</label>
@@ -259,4 +319,4 @@ export default function EditPortfolio() {
       </main>
     </div>
   );
-                                   }
+  }
