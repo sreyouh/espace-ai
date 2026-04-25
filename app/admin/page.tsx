@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
 import Link from "next/link";
 
-const ADMIN_EMAIL = "sreeharisunil100@gmail.com";
+const ADMIN_EMAIL = "mailtoespacesystems@gmail.com";
 
 interface Order {
   id: string;
