@@ -30,7 +30,7 @@ export default function Footer() {
               <li><Link href="#benefits">Features</Link></li>
               <li><Link href="#why">Why Portfolio</Link></li>
               <li><Link href="#pricing">Pricing</Link></li>
-              <li><Link href="/create">Start Building</Link></li>
+              <li><Link href="/login">Start Building</Link></li>
             </ul>
           </div>
 
