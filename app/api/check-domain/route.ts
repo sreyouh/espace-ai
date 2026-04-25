@@ -1,16 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const HOSTINGER_TOKEN = process.env.HOSTINGER_API_TOKEN;
-const BUILDING_CHARGE = 299;
+const BUILDING_CHARGE = 300;
 
 const TLD_PRICES: Record<string, number> = {
   com: 899,
   in: 599,
-  online: 349,
-  site: 349,
-  space: 299,
-  live: 449,
-  net: 799,
+  online: 89,
+  site: 89,
+  space: 89,
+  live: 249,
+  net: 999,
+  tech: 609,
+  bio: 529,
+  org: 699,
+  shop: 89,
+  store: 99,
+  io: 2799,
+  cloud: 179,
+  blog: 179,
+  fun: 89,
+  cc: 349,
+  sbs: 89,
+  pro: 269,
+  co: 2449,
 };
 
 export async function POST(req: NextRequest) {
@@ -26,7 +39,11 @@ export async function POST(req: NextRequest) {
       .replace(/[^a-z0-9-]/g, "")
       .replace(/\s+/g, "-");
 
-    const tlds = ["com", "in", "online", "site", "space", "live", "net"];
+    const tlds = [
+      "com", "in", "online", "site", "space", "live", "net",
+      "tech", "org", "shop", "store", "cloud", "blog", "fun",
+      "cc", "sbs", "pro",
+    ];
 
     const response = await fetch(
       "https://developers.hostinger.com/api/domains/v1/availability",
@@ -69,4 +86,4 @@ export async function POST(req: NextRequest) {
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
-}
+         }
