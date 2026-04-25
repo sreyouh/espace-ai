@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const HOSTINGER_TOKEN = process.env.HOSTINGER_API_TOKEN;
-const BUILDING_CHARGE = 300;
+const BUILDING_CHARGE = 450;
 
 const TLD_PRICES: Record<string, number> = {
   com: 899,
