@@ -10,8 +10,6 @@ interface DomainResult {
   total: number;
 }
 
-const TLDS = [".com", ".in", ".online", ".site", ".space", ".live", ".net"];
-
 export default function DomainsPage() {
   const [query, setQuery] = useState("");
   const [searching, setSearching] = useState(false);
@@ -49,14 +47,6 @@ export default function DomainsPage() {
       });
 
       const data = await response.json();
-
-      // Show raw Hostinger response for debugging
-      if (data.raw !== undefined) {
-        setError("Hostinger raw response: " + data.raw);
-        setSearching(false);
-        setSearched(true);
-        return;
-      }
 
       if (data.error) {
         setError(data.error);
@@ -189,7 +179,11 @@ export default function DomainsPage() {
               </div>
             ) : (
               <>
-                {error && <div className="auth-error" style={{ marginBottom: 20 }}>{error}</div>}
+                {error && (
+                  <div className="auth-error" style={{ marginBottom: 20 }}>
+                    {error}
+                  </div>
+                )}
 
                 <h2 className="domain-results-title">
                   Results for <span>"{query}"</span>
@@ -274,7 +268,10 @@ export default function DomainsPage() {
                       <span className="domain-proceed-domain">{selectedDomain.domain}</span>
                       <span className="domain-proceed-total">Total: ₹{selectedDomain.total}</span>
                     </div>
-                    <Link href={`/payment?domain=${selectedDomain.domain}&amount=${selectedDomain.total}`} className="domain-proceed-btn">
+                    <Link
+                      href={`/payment?domain=${selectedDomain.domain}&amount=${selectedDomain.total}`}
+                      className="domain-proceed-btn"
+                    >
                       Proceed to Payment
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                         <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
@@ -299,11 +296,12 @@ export default function DomainsPage() {
             <div>
               <h3 className="domain-contact-title">Need help choosing?</h3>
               <p className="domain-contact-desc">
-                Our team at Espace Systems is happy to help you pick the right domain and get your portfolio live.
+                Our team at Espace Systems is happy to help you pick the right
+                domain and get your portfolio live.
               </p>
             </div>
             <a href="mailto:sreeharisunil100@gmail.com" className="domain-contact-btn">
-              sreeharisunil100@gmail.com
+              Contact Us
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
               </svg>
@@ -314,10 +312,15 @@ export default function DomainsPage() {
 
       <footer className="domain-footer">
         <div className="domain-footer-inner">
-          <span>Espace AI — Developed by <a href="https://sreeharis.in/espace" target="_blank" rel="noopener noreferrer">Espace Systems</a></span>
+          <span>
+            Espace AI — Developed by{" "}
+            <a href="https://sreeharis.in/espace" target="_blank" rel="noopener noreferrer">
+              Espace Systems
+            </a>
+          </span>
           <span>espacesystems.online</span>
         </div>
       </footer>
     </div>
   );
-}
+            }
