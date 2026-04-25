@@ -50,6 +50,14 @@ export default function DomainsPage() {
 
       const data = await response.json();
 
+      // Show raw Hostinger response for debugging
+      if (data.raw !== undefined) {
+        setError("Hostinger raw response: " + data.raw);
+        setSearching(false);
+        setSearched(true);
+        return;
+      }
+
       if (data.error) {
         setError(data.error);
       } else {
