@@ -1,4 +1,4 @@
-    import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 const HOSTINGER_TOKEN = process.env.HOSTINGER_API_TOKEN;
 const BUILDING_CHARGE = 299;
@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
     const domains = tlds.map((tld) => clean + tld);
 
     const response = await fetch(
-      "https://api.hostinger.com/api/domains/v1/availability",
+      "https://developers.hostinger.com/api/domains/v1/availability",
       {
         method: "POST",
         headers: {
@@ -33,10 +33,9 @@ export async function POST(req: NextRequest) {
 
     const text = await response.text();
 
-    // Return raw response so we can see what Hostinger sends
     return NextResponse.json({
       status: response.status,
-      raw: text,
+      raw: text.substring(0, 500),
     });
 
   } catch (err: any) {
