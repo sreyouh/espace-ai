@@ -49,8 +49,8 @@ const customPlan = {
   subdomain: "yourname.com",
   cta: "Get Custom Domain",
   ctaClass: "btn-gold",
-  href: "/login",
-  featured: false,
+  href: "/login?redirect=/templates",
+featured: false,
 };
 
 function PricingCard({ plan }: { plan: typeof freePlan }) {
