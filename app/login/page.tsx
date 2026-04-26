@@ -23,6 +23,8 @@ export default function LoginPage() {
       return;
     }
 
+    const redirect = new URLSearchParams(window.location.search).get("redirect") || "/dashboard";
+
     if (isSignUp) {
       const { error } = await supabase.auth.signUp({ email, password });
       if (error) {
@@ -35,16 +37,17 @@ export default function LoginPage() {
       if (error) {
         setError(error.message);
       } else {
-        window.location.href = "/dashboard";
+        window.location.href = redirect;
       }
     }
     setLoading(false);
   };
 
   const handleGoogle = async () => {
+    const redirect = new URLSearchParams(window.location.search).get("redirect") || "/dashboard";
     await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: `${window.location.origin}/dashboard` },
+      options: { redirectTo: `${window.location.origin}${redirect}` },
     });
   };
 
@@ -143,4 +146,4 @@ export default function LoginPage() {
       </div>
     </div>
   );
-      }
+}
