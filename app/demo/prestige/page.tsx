@@ -218,7 +218,7 @@ export default function PrestigeDemo() {
                 year: "2023 – Present",
                 role: "Your Current Role",
                 org: "Your Current Company",
-                emoji: "🚀",
+                emoji: "",
                 desc: "Describe what you do in your current role. Talk about your responsibilities, achievements, and the impact you have made. This section is automatically written for you by our AI.",
                 tags: ["Skill 1", "Skill 2", "Achievement"],
               },
@@ -226,7 +226,7 @@ export default function PrestigeDemo() {
                 year: "2022 – 2023",
                 role: "Previous Role",
                 org: "Previous Company",
-                emoji: "💼",
+                emoji: "",
                 desc: "Describe your previous experience here. The AI will take your bullet points and turn them into compelling, professional descriptions that impress recruiters.",
                 tags: ["Tool 1", "Tool 2", "Responsibility"],
               },
@@ -234,7 +234,7 @@ export default function PrestigeDemo() {
                 year: "2020 – Present",
                 role: "Your Education",
                 org: "Your University / College",
-                emoji: "🎓",
+                emoji: "",
                 desc: "Your educational background. Mention your degree, major, and any notable achievements or projects during your studies.",
                 tags: ["Your Degree", "Your Major", "Your University"],
               },
@@ -267,12 +267,12 @@ export default function PrestigeDemo() {
           <h2 className="p-section-title">What I Work With</h2>
           <div className="p-skills-grid">
             {[
-              { icon: "🌐", title: "Your Primary Skill", desc: "Describe your primary skill area here. What tools do you use? What have you built? What problems do you solve?" },
-              { icon: "📈", title: "Your Second Skill", desc: "Another skill area you are strong in. The AI will help you write compelling descriptions based on your input." },
-              { icon: "🎨", title: "Your Third Skill", desc: "A creative or technical skill that sets you apart. Mention specific tools, frameworks, or methodologies." },
-              { icon: "🚀", title: "Your Fourth Skill", desc: "Leadership, strategy, or any other skill. Your portfolio will highlight what makes you uniquely valuable." },
-              { icon: "🤖", title: "Your Fifth Skill", desc: "Tools, technologies, or platforms you are proficient with. Be specific — it helps recruiters find you." },
-              { icon: "🔬", title: "Your Sixth Skill", desc: "Any specialized knowledge or niche expertise. This is what makes your profile stand out from others." },
+              { icon: "", title: "Your Primary Skill", desc: "Describe your primary skill area here. What tools do you use? What have you built? What problems do you solve?" },
+              { icon: "", title: "Your Second Skill", desc: "Another skill area you are strong in. The AI will help you write compelling descriptions based on your input." },
+              { icon: "", title: "Your Third Skill", desc: "A creative or technical skill that sets you apart. Mention specific tools, frameworks, or methodologies." },
+              { icon: "", title: "Your Fourth Skill", desc: "Leadership, strategy, or any other skill. Your portfolio will highlight what makes you uniquely valuable." },
+              { icon: "", title: "Your Fifth Skill", desc: "Tools, technologies, or platforms you are proficient with. Be specific — it helps recruiters find you." },
+              { icon: "", title: "Your Sixth Skill", desc: "Any specialized knowledge or niche expertise. This is what makes your profile stand out from others." },
             ].map((s, i) => (
               <div key={i} className="p-skill-card">
                 <span className="p-skill-icon">{s.icon}</span>
