@@ -1385,7 +1385,8 @@ img {
 }
 
 .dashboard-main {
-  margin-left: 240px;
+  grid-column: 2;
+  margin-left: 0;
   padding: 40px;
 }
 
@@ -1559,7 +1560,8 @@ img {
 }
 
 .create-main {
-  margin-left: 260px;
+  grid-column: 2;
+  margin-left: 0;
   padding: 48px 40px;
   display: flex;
   align-items: flex-start;
@@ -3684,7 +3686,8 @@ img {
 }
 
 .premium-create-main {
-  margin-left: 280px;
+  grid-column: 2;
+  margin-left: 0;
   padding: 48px 40px;
   display: flex;
   align-items: flex-start;
