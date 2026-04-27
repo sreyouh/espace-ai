@@ -249,7 +249,7 @@ export default function EditPortfolio() {
                 </div>
                 <div className="template-info">
                   <span className="template-name">Horizon</span>
-                  <span className="template-tag premium-template">Premium</span>
+                  <span className="template-tag free-template">free</span>
                 </div>
               </div>
 
@@ -266,7 +266,7 @@ export default function EditPortfolio() {
                 </div>
                 <div className="template-info">
                   <span className="template-name">Aurora</span>
-                  <span className="template-tag premium-template">Premium</span>
+                  <span className="template-tag free-template">free</span>
                 </div>
               </div>
             </div>
