@@ -7,6 +7,11 @@ export default function Dashboard() {
   const [user, setUser] = useState<any>(null);
   const [portfolio, setPortfolio] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [copied, setCopied] = useState(false);
+  const [newPassword, setNewPassword] = useState("");
+  const [changingPwd, setChangingPwd] = useState(false);
+  const [pwdError, setPwdError] = useState("");
+  const [pwdSuccess, setPwdSuccess] = useState("");
 
   useEffect(() => {
     const getData = async () => {
@@ -32,6 +37,27 @@ export default function Dashboard() {
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     window.location.href = "/";
+  };
+
+  const handleChangePassword = async () => {
+    if (!newPassword) return;
+    if (newPassword.length < 8) { setPwdError("Min 8 characters required."); return; }
+    if (!/[A-Z]/.test(newPassword)) { setPwdError("Must contain one uppercase letter."); return; }
+    if (!/[0-9]/.test(newPassword)) { setPwdError("Must contain one number."); return; }
+
+    setChangingPwd(true);
+    setPwdError("");
+    setPwdSuccess("");
+
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
+
+    if (error) {
+      setPwdError(error.message);
+    } else {
+      setPwdSuccess("Password updated successfully!");
+      setNewPassword("");
+    }
+    setChangingPwd(false);
   };
 
   if (loading) {
@@ -117,18 +143,67 @@ export default function Dashboard() {
               </p>
             </div>
             <div className="pcd-actions">
-  <a href={`/portfolio/${portfolio.username}`} target="_blank" className="btn btn-outline">
-    View Live
-  </a>
-  <a href="/edit" className="btn btn-primary">
-    Edit
-  </a>
-  <a href="/domains" className="btn btn-gold">
-    Upgrade Domain
-  </a>
-</div>
+              <a href={`/portfolio/${portfolio.username}`} target="_blank" className="btn btn-outline">
+                View Live
+              </a>
+              <a href="/edit" className="btn btn-primary">
+                Edit
+              </a>
+              <a href="/domains" className="btn btn-gold">
+                Upgrade Domain
+              </a>
+            </div>
           </div>
-        ) : (
+        ) : null}
+
+        {portfolio && (
+          <div className="dashboard-tools">
+            <div className="dashboard-tool-card">
+              <h3 className="dashboard-tool-title">Share your portfolio</h3>
+              <p className="dashboard-tool-desc">Copy your portfolio link and share it with recruiters and clients.</p>
+              <div className="dashboard-share-box">
+                <span className="dashboard-share-url">
+                  espacesystems.online/portfolio/{portfolio.username}
+                </span>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => {
+                    navigator.clipboard.writeText(`https://espacesystems.online/portfolio/${portfolio.username}`);
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 2000);
+                  }}
+                >
+                  {copied ? "Copied!" : "Copy Link"}
+                </button>
+              </div>
+            </div>
+
+            <div className="dashboard-tool-card">
+              <h3 className="dashboard-tool-title">Change password</h3>
+              <p className="dashboard-tool-desc">Update your account password.</p>
+              {pwdSuccess && <div className="auth-success">{pwdSuccess}</div>}
+              {pwdError && <div className="auth-error">{pwdError}</div>}
+              <div className="dashboard-pwd-row">
+                <input
+                  type="password"
+                  placeholder="New password (min 8 chars, 1 uppercase, 1 number)"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="dashboard-pwd-input"
+                />
+                <button
+                  className="btn btn-primary"
+                  onClick={handleChangePassword}
+                  disabled={changingPwd}
+                >
+                  {changingPwd ? "Saving..." : "Update"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {!portfolio && (
           <div className="dashboard-empty">
             <div className="dashboard-empty-icon">
               <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -150,4 +225,5 @@ export default function Dashboard() {
       </main>
     </div>
   );
-          }
+}
+
