@@ -3572,3 +3572,221 @@ img {
     grid-template-columns: 1fr;
   }
 }
+/* ========= PREMIUM CREATE ========= */
+.premium-create-page {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 100vh;
+}
+
+.premium-create-sidebar {
+  background: #0a1628;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 280px;
+}
+
+.premium-create-logo {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #c9a84c;
+  text-decoration: none;
+}
+
+.premium-create-template-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(201,168,76,0.12);
+  border: 1px solid rgba(201,168,76,0.25);
+  border-radius: 50px;
+  font-size: 0.78rem;
+  color: #c9a84c;
+  font-weight: 600;
+}
+
+.premium-template-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #c9a84c;
+  animation: pulse 2s ease infinite;
+}
+
+.premium-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.premium-step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.4);
+  transition: all 0.2s;
+}
+
+.premium-step.active {
+  background: rgba(201,168,76,0.12);
+  color: #c9a84c;
+}
+
+.premium-step.done {
+  color: rgba(255,255,255,0.6);
+}
+
+.premium-step-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  color: rgba(255,255,255,0.4);
+}
+
+.premium-step.active .premium-step-num {
+  background: #c9a84c;
+  color: #0a1628;
+}
+
+.premium-step.done .premium-step-num {
+  background: rgba(201,168,76,0.2);
+  color: #c9a84c;
+  font-size: 0.6rem;
+}
+
+.premium-sidebar-note {
+  margin-top: auto;
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.3);
+  line-height: 1.6;
+  padding: 16px;
+  background: rgba(255,255,255,0.04);
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.premium-create-main {
+  margin-left: 280px;
+  padding: 48px 40px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.premium-create-box {
+  width: 100%;
+  max-width: 580px;
+}
+
+.premium-create-title {
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+
+.premium-create-sub {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+
+.premium-create-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 32px;
+  justify-content: flex-end;
+}
+
+.ai-rewrite-preview {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.ai-rewrite-item {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.ai-rewrite-item:last-child {
+  border-bottom: none;
+}
+
+.ai-rewrite-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.ai-rewrite-value {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.ai-rewrite-note {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  padding: 16px;
+  background: var(--accent-light);
+  border-radius: var(--radius-sm);
+  line-height: 1.6;
+}
+
+.ai-result-section {
+  position: relative;
+}
+
+.ai-result-badge {
+  display: inline-flex;
+  padding: 4px 12px;
+  background: var(--gold-light);
+  color: var(--gold);
+  border-radius: 50px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .premium-create-page {
+    grid-template-columns: 1fr;
+  }
+  .premium-create-sidebar {
+    display: none;
+  }
+  .premium-create-main {
+    margin-left: 0;
+    padding: 24px 16px;
+  }
+}
