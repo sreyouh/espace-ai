@@ -115,9 +115,9 @@ export default function TemplatesPage() {
                 <a href={t.demo} target="_blank" rel="noopener noreferrer" className="btn btn-outline">
                   Live Preview
                 </a>
-                <Link href={`/domains?template=${t.id}`} className="btn btn-primary">
-                  Choose This Template
-                </Link>
+                <Link href={`/premium/create?template=${t.id}`} className="btn btn-primary">
+  Choose This Template
+</Link>
               </div>
             </div>
           </div>
