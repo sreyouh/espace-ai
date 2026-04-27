@@ -12,6 +12,13 @@ export default function LoginPage() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
+  const validatePassword = (pwd: string) => {
+    if (pwd.length < 8) return "Password must be at least 8 characters.";
+    if (!/[A-Z]/.test(pwd)) return "Password must contain at least one uppercase letter.";
+    if (!/[0-9]/.test(pwd)) return "Password must contain at least one number.";
+    return "";
+  };
+
   const handleAuth = async () => {
     setLoading(true);
     setError("");
@@ -23,6 +30,15 @@ export default function LoginPage() {
       return;
     }
 
+    if (isSignUp) {
+      const pwdError = validatePassword(password);
+      if (pwdError) {
+        setError(pwdError);
+        setLoading(false);
+        return;
+      }
+    }
+
     const redirect = new URLSearchParams(window.location.search).get("redirect") || "/dashboard";
 
     if (isSignUp) {
@@ -30,7 +46,7 @@ export default function LoginPage() {
       if (error) {
         setError(error.message);
       } else {
-        setMessage("Account created! Check your email to confirm.");
+        setMessage("Account created! Check your email to confirm then sign in.");
       }
     } else {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -126,6 +142,11 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+            {isSignUp && (
+              <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: 5 }}>
+                Min 8 characters, one uppercase letter and one number.
+              </p>
+            )}
           </div>
 
           <button
@@ -147,3 +168,4 @@ export default function LoginPage() {
     </div>
   );
 }
+
